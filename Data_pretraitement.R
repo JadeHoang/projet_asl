@@ -83,6 +83,7 @@ find_intersect <- function(df){
   for (i in 1:nrow(df)){
     #afficher ieme iteration
     # print(i)
+    require(svMisc)
     progress(i, max.value = nrow(df))
     # Sys.sleep(0.01)
     
@@ -125,7 +126,7 @@ find_intersect <- function(df){
 }
 
 ####creer un nouveau dataframe sans les lignes de lex et sem complexes####
-require(svMisc)
+
 df_new <- find_intersect(df_test) #il prend quelques moments car on a plus de 30000 lignes
 df_new <- unique(df_new)
 nrow(df_new)
@@ -201,8 +202,6 @@ df_5_ent$sem <- sapply(df_5_ent$sem,function(x) {labelling(x)})
 df_5_ent <- unique(df_5_ent)
 length(unique(df_5_ent$lex))
 
-df_5_ent$lex <- as.character(tolower(df_5_ent$lex))
-
 df_5_ent <- as.data.frame(apply(df_5_ent, 2, function(x){gsub(" ","_",x)}),stringsAsFactors = FALSE)
 
 df_5_ent <- df_5_ent[!duplicated(df_5_ent["lex"]),]
@@ -228,7 +227,8 @@ dict <- dictionary(list(DNA=term.dna,
                          ,CTYPE=term.ctype,
                          CLINE=term.cline
                         ))
-test1 <- as.character(tolower(dat$doc))
+
+test1 <- dat$doc
 toks <- as.character(tokens_compound(tokens(test1), dict,join = FALSE))
 infle <- c("cell","cells")
 lemma <- rep("cell", length(infle))
