@@ -267,6 +267,7 @@ iob_tag <- function(word,semantic){
 # undebug(iob_tag)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 a <- c()
 b <- c()
 #vecteur qui stocke les tokens apres avoir separé et libellé avec les tag IOB
@@ -350,6 +351,18 @@ iob.word <- unlist(sapply(toks2, function(x){
 iob.label <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
                   else "O"}),use.names = FALSE)
+=======
+iob.word <- c()
+iob.label <- c()
+iob.word <- unlist(sapply(toks2, function(x){
+                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
+                  else x}),use.names = FALSE)
+
+
+iob.label <- unlist(sapply(toks2, function(x){
+                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
+                  else "O"}),use.names = FALSE)
+>>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
   
 length(iob.word)
 length(iob.label)
@@ -410,7 +423,10 @@ special_verb_trigger <- function(data, win_size){
 }
 spe.verb.trig <- special_verb_trigger(pos.df, 2)
 spe.verb.trig
+<<<<<<< HEAD
 # >>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
+=======
+>>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
 
 
 
