@@ -355,7 +355,7 @@ special_verb_trigger <- function(data, win_size){
   list.verb <- c()
   for(i in list.ind2){
     for(w in win){
-      if( data$pos[i + w] == "VERB" && !is.na(data$pos[i + w] )){
+      if( data$pos[i + w] == "VERB" && !is.na(data$pos[i + w]) && data$label[i + w] == "O"){
         list.verb <- c(list.verb, as.character(data$lemma[i+w]))
       }
     }
@@ -364,11 +364,35 @@ special_verb_trigger <- function(data, win_size){
   table.verb <- sort(table(list.verb), decreasing = TRUE)
   return(table.verb)
 }
-spe.verb.trig <- special_verb_trigger(pos.df, 2)
+spe.verb.trig <- special_verb_trigger(pos.df, 1)
 
-#60 premieres verbes les plus fréquentes
-head(spe.verb.trig, n = 60)
+# ISSUE: on retient le verbe "protein", voir pourquoi on retient ça, a priori ce n'est pas un verbe ...
 
+# On retient les 60 premiers verbes les plus fréquents
+spe.verb.trig.60 <- head(spe.verb.trig, n = 60)
+
+
+# Pour l'extraction des special verb trigger, on tient compte de la table de verbes obtenue, et des labels.
+# Cette extraction est spécifique à l'entrainement, dans le jeu de test, on ne peut pas prendre en compte les labels (qui sont inconnus)
+svt.feat.train <- function(data, svt_table, win_size = 1){
+  list.ind <- which(data$label != "O")
+  reject_first_and_last <- c(c(-win_size:-1), c(-length(list.ind):-length(list.ind)-win_size))
+  list.ind2 <- list.ind[reject_first_and_last]
+  win = c(c(-win_size:-1), c(1:win_size))
+  
+  svt <- logical(length(data$word))
+  for(i in list.ind2){
+    for(w in win){
+      if( data$lemma[i + w] %in% names(svt_table) && data$label[i + w] == "O"){
+        svt[i] <- TRUE
+        break
+      }
+    }
+  }
+  return(svt)
+}
+svt <- svt.feat.train(pos.df, spe.verb.trig.60)
+pos.df <- dplyr::mutate(pos.df, svt = svt)
 
 #### Word formation pattern####
 #fonction attribuer code WFP
@@ -417,7 +441,8 @@ pos.df <- dplyr::mutate(
       grepl("^[[:digit:]].*[[:upper:]|[:lower:]]$",word) ~ "DigitAlpha",
       
       TRUE                     ~ "Others"
-    ))
+    )
+  )
 
 #les 100eres lignes de data_wfp
 head(data_wfp, n = 100)
