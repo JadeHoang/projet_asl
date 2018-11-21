@@ -1,6 +1,5 @@
 ####install et charger les packages####
 install.packages("xml2")
-install.packages("gsubfn")
 install.packages("stringr")
 install.packages("svMisc")
 install.packages("udpipe")
@@ -9,7 +8,6 @@ install.packages("quanteda")
 library(udpipe)
 library(dplyr)
 library(xml2)
-library(gsubfn)
 library(stringr)
 library(quanteda)
 ####import xml file####
@@ -62,8 +60,8 @@ df_test <- unique(df_test)
 split_all <- function(str){
   # str <- gsub("[][()]","",str)
   # supprimer les "(" , ")" , "*" 
-  str <- gsubfn(".", list("(" = "", ")" = "","*"=""), str)
-  
+  # str <- gsubfn(".", list("(" = "", ")" = "","*"=""), str)
+  str <- str_replace_all(str,"\\(|\\)|\\*","")
   #couper les termes qui sont separées par " " 
   return(unlist(strsplit(x = str," ")))
 }
