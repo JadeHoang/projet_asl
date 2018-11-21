@@ -4,13 +4,14 @@ install.packages("gsubfn")
 install.packages("stringr")
 # install.packages("rJava")
 install.packages("udpipe")
+install.packages("quanteda")
 # install.packages("dplyr")
 library(udpipe)
 library(dplyr)
 library(xml2)
 library(gsubfn)
 library(stringr)
-
+library(quanteda)
 ####import xml file####
 
 #import version de Yang Yang avec rootNode
@@ -197,17 +198,20 @@ labelling <- function(cellule){
   
   return(cellule)
 }
-
+#relibeller les entites
 df_5_ent$sem <- sapply(df_5_ent$sem,function(x) {labelling(x)})
+#garger seulement les lignes uniques
 df_5_ent <- unique(df_5_ent)
-length(unique(df_5_ent$lex))
+# length(unique(df_5_ent$lex))
 
+#replacer les espaces en underscores
 df_5_ent <- as.data.frame(apply(df_5_ent, 2, function(x){gsub(" ","_",x)}),stringsAsFactors = FALSE)
 
+#garder que des lex uniques (probleme avec les annotations du corpus)
 df_5_ent <- df_5_ent[!duplicated(df_5_ent["lex"]),]
 
 ####IOB tagging####
-#les lex uniques qui designent DNA
+#les lex uniques qui designent DNA,PROTEIN,RNA,CTYPE,CLINE
 term.dna <- unique(df_5_ent$lex[which(df_5_ent$sem=="DNA")])
 term.protein <- unique(df_5_ent$lex[which(df_5_ent$sem=="PROTEIN")])
 term.rna <- unique(df_5_ent$lex[which(df_5_ent$sem=="RNA")])
@@ -221,6 +225,7 @@ term.rna <- as.character(sapply(term.rna, function(x) {gsub("_"," ",x)}))
 term.ctype <- as.character(sapply(term.ctype, function(x) {gsub("_"," ",x)}))
 term.cline <- as.character(sapply(term.cline, function(x) {gsub("_"," ",x)}))
 
+#creer un dictionaire avec package quanteda
 dict <- dictionary(list(DNA=term.dna,
                         PROTEIN=term.protein
                          ,RNA=term.rna
@@ -229,12 +234,16 @@ dict <- dictionary(list(DNA=term.dna,
                         ))
 
 test1 <- dat$doc
+#tokeniser les abtracts (tokeniser les mots composés)
 toks <- as.character(tokens_compound(tokens(test1), dict,join = FALSE))
+
+#les mots qui se ressemblent et les remplacer dans la liste des tokens 
 infle <- c("cell","cells")
 lemma <- rep("cell", length(infle))
 toks2 <- tokens_replace(tokens(test1), infle, lemma)
 toks2 <- as.character(tokens_compound(toks2,dict,join = FALSE))
 
+#fonction pour libeller en IOB/BOI les tokens 
 iob_tag <- function(word,semantic){
   #separer le mot par "_"
   if (grepl(pattern = "_", word,fixed=TRUE)){
@@ -259,18 +268,76 @@ iob_tag <- function(word,semantic){
 
 a <- c()
 b <- c()
+#vecteur qui stocke les tokens apres avoir separé et libellé avec les tag IOB
 a <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
                   else x}),use.names = FALSE)
 
-
+#vecteur qui stocke les tag IOB qui correspondent a des tokens au dessus
 b <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
                   else "O"}),use.names = FALSE)
-  
+
+#longueur de vecteur a
 length(a)
+#longueur de vecteur b
 length(b)
-length(as.character(tokens(test1)))
+
+#il faut que a et b aient de meme longueur = 497668
+
+#### Word formation pattern####
+#fonction attribuer code WFP
+# wfp_tag <- function(word){
+# t <- data.frame(word = a[1:300], label = b[1:300], stringsAsFactors = FALSE)
+
+#liste des mots greecs
+greek <- c("alpha","beta","gamma","delta","epsilon","zeta"
+           ,"eta","theta","iota","kappa","lambda","mu","nu"
+           ,"xi","omicron","pi","rho","sigma","tau","upsilon"
+           ,"phi","chi","psi","omega")
+
+#alphabet sans A, T, C , G
+to <- LETTERS[! LETTERS %in% c("A","G","T","C")]
+
+#creer un dataframe avec word/label IOB/tag WFP 
+data_wfp <- dplyr::mutate(
+  # data.frame(word=c("ACGC",",",".","(","1,25","A","1","23525",
+  #                   "II","0.31","The","Whereas","IgM",
+  #                   "kDa","H2A","T4","6C2","19D","alpha"),stringsAsFactors = FALSE) ,
+  data.frame(word=a,
+             label=b,
+             stringsAsFactors = FALSE),
+  WFP =  
+  dplyr::case_when(
+    word  == ","  ~ "Comma",
+    word  == "."  ~ "Dot",
+    word  %in% c("(",")","[","]") ~ " Parenthesis",
+    word  %in% 0:9 ~ "OneDigit",
+    grepl("^[[:digit:]]+$", word) & nchar(word) > 1 ~ "AllDigits",
+    word %in% LETTERS ~ "OneCap",
+    tolower(word)  %in% tolower(stopwords(language = "en")) ~ "StopWord",
+    !grepl(paste0(c(to,0:9),collapse = "|"),gsub("[[:punct:]]", "", toupper(word))) ~ "ATCGsequence",
+
+    !is.na(as.roman(word)) & is.na(as.numeric(word)) ~ "RomanDigit",
+    grepl("^[[:upper:]]+$", word) & nchar(word) > 1 ~ "AllCaps",
+
+    tolower(word) %in% greek ~ "GreekLetter",
+    grepl("^[[:digit:]]\\,.*[[:digit:]]$",word) ~ "DigitCommaDigit",
+    grepl("^[[:digit:]]\\..*[[:digit:]]$",word) ~ "DigitDotDigit",
+    
+    grepl("^[[:upper:]].*[[:lower:]]$",word) ~ "CapLowAlpha",
+    grepl("^[[:upper:]].*[[:lower:]].*[[:upper:]]$",word) ~ "CapMixAlpha",
+    grepl("^[[:lower:]].*[[:upper:]].*[[:lower:]]$",word) ~ "LowMixAlpha",
+    grepl("^[[:upper:]].*[[:digit:]].*[[:upper:]]$",word) ~ "AlphaDigitAlpha",
+    grepl("^[[:upper:]].*[[:digit:]]$",word) ~ "AlphaDigit",
+    grepl("^[[:digit:]].*[[:upper:]].*[[:digit:]]$",word) ~ "DigitAlphaDigit",
+    grepl("^[[:digit:]].*[[:upper:]|[:lower:]]$",word) ~ "DigitAlpha",
+    
+    TRUE                     ~ "Others"
+  ))
+
+#les 100eres lignes de data_wfp
+head(data_wfp, n = 100)
 
 ####POS tagging avec NLP####
 
@@ -280,12 +347,13 @@ str(dl)
 udmodel_english <- udpipe_load_model(file = "english-ud-2.0-170801.udpipe")
 
 ## Or give the full path to the file
-udmodel_english <- udpipe_load_model(file = dl$file_model)
-txt <- paste(tokens(x1),collapse = '\n')
+# udmodel_english <- udpipe_load_model(file = dl$file_model)
+txt <- paste(a[1:50000],collapse = '\n')
 
 udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical")
-as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
-
+Sys.time()
+pos1 <- as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
+Sys.time()
 
 
 
