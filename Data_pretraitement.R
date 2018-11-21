@@ -2,7 +2,7 @@
 install.packages("xml2")
 install.packages("gsubfn")
 install.packages("stringr")
-# install.packages("rJava")
+install.packages("svMisc")
 install.packages("udpipe")
 install.packages("quanteda")
 # install.packages("dplyr")
@@ -263,139 +263,82 @@ iob_tag <- function(word,semantic){
   return(list(word=word.vec , label=label.vec))
 }
 
-# debug(iob_tag)
-# undebug(iob_tag)
+#initialiser les vecteurs pour les tokens et IOB tags
+iob.word <- c()
+iob.label <- c()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-a <- c()
-b <- c()
 #vecteur qui stocke les tokens apres avoir separé et libellé avec les tag IOB
-a <- unlist(sapply(toks2, function(x){
+iob.word <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
                   else x}),use.names = FALSE)
 
 #vecteur qui stocke les tag IOB qui correspondent a des tokens au dessus
-b <- unlist(sapply(toks2, function(x){
+iob.label <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
                   else "O"}),use.names = FALSE)
 
 #longueur de vecteur a
-length(a)
-#longueur de vecteur b
-length(b)
-
-#il faut que a et b aient de meme longueur = 497668
-
-#### Word formation pattern####
-#fonction attribuer code WFP
-# wfp_tag <- function(word){
-# t <- data.frame(word = a[1:300], label = b[1:300], stringsAsFactors = FALSE)
-
-#liste des mots greecs
-greek <- c("alpha","beta","gamma","delta","epsilon","zeta"
-           ,"eta","theta","iota","kappa","lambda","mu","nu"
-           ,"xi","omicron","pi","rho","sigma","tau","upsilon"
-           ,"phi","chi","psi","omega")
-
-#alphabet sans A, T, C , G
-to <- LETTERS[! LETTERS %in% c("A","G","T","C")]
-
-#creer un dataframe avec word/label IOB/tag WFP 
-data_wfp <- dplyr::mutate(
-  # data.frame(word=c("ACGC",",",".","(","1,25","A","1","23525",
-  #                   "II","0.31","The","Whereas","IgM",
-  #                   "kDa","H2A","T4","6C2","19D","alpha"),stringsAsFactors = FALSE) ,
-  data.frame(word=a,
-             label=b,
-             stringsAsFactors = FALSE),
-  WFP =  
-  dplyr::case_when(
-    word  == ","  ~ "Comma",
-    word  == "."  ~ "Dot",
-    word  %in% c("(",")","[","]") ~ " Parenthesis",
-    word  %in% 0:9 ~ "OneDigit",
-    grepl("^[[:digit:]]+$", word) & nchar(word) > 1 ~ "AllDigits",
-    word %in% LETTERS ~ "OneCap",
-    tolower(word)  %in% tolower(stopwords(language = "en")) ~ "StopWord",
-    !grepl(paste0(c(to,0:9),collapse = "|"),gsub("[[:punct:]]", "", toupper(word))) ~ "ATCGsequence",
-
-    !is.na(as.roman(word)) & is.na(as.numeric(word)) ~ "RomanDigit",
-    grepl("^[[:upper:]]+$", word) & nchar(word) > 1 ~ "AllCaps",
-
-    tolower(word) %in% greek ~ "GreekLetter",
-    grepl("^[[:digit:]]\\,.*[[:digit:]]$",word) ~ "DigitCommaDigit",
-    grepl("^[[:digit:]]\\..*[[:digit:]]$",word) ~ "DigitDotDigit",
-    
-    grepl("^[[:upper:]].*[[:lower:]]$",word) ~ "CapLowAlpha",
-    grepl("^[[:upper:]].*[[:lower:]].*[[:upper:]]$",word) ~ "CapMixAlpha",
-    grepl("^[[:lower:]].*[[:upper:]].*[[:lower:]]$",word) ~ "LowMixAlpha",
-    grepl("^[[:upper:]].*[[:digit:]].*[[:upper:]]$",word) ~ "AlphaDigitAlpha",
-    grepl("^[[:upper:]].*[[:digit:]]$",word) ~ "AlphaDigit",
-    grepl("^[[:digit:]].*[[:upper:]].*[[:digit:]]$",word) ~ "DigitAlphaDigit",
-    grepl("^[[:digit:]].*[[:upper:]|[:lower:]]$",word) ~ "DigitAlpha",
-    
-    TRUE                     ~ "Others"
-  ))
-
-#les 100eres lignes de data_wfp
-head(data_wfp, n = 100)
-=======
-iob.word <- c()
-iob.label <- c()
-iob.word <- unlist(sapply(toks2, function(x){
-                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
-                  else x}),use.names = FALSE)
-
-
-iob.label <- unlist(sapply(toks2, function(x){
-                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
-                  else "O"}),use.names = FALSE)
-=======
-iob.word <- c()
-iob.label <- c()
-iob.word <- unlist(sapply(toks2, function(x){
-                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
-                  else x}),use.names = FALSE)
-
-
-iob.label <- unlist(sapply(toks2, function(x){
-                  if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
-                  else "O"}),use.names = FALSE)
->>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
-  
 length(iob.word)
+#longueur de vecteur b
 length(iob.label)
-length(as.character(tokens(test1)))
->>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
+
+#il faut que iob.word et  aient de meme longueur = 497668
 
 ####POS tagging avec NLP####
 
+#telecharger le model en anglais
 dl <- udpipe_download_model(language = "english")
-str(dl)
-## Either give a file in the current working directory
+# str(dl)
+
+#Entrer le fichier qu'on a just téléchargé dans le directoir actuel
 udmodel_english <- udpipe_load_model(file = "english-ud-2.0-170801.udpipe")
-
-## Or give the full path to the file
-# <<<<<<< HEAD
 # udmodel_english <- udpipe_load_model(file = dl$file_model)
-txt <- paste(a[1:50000],collapse = '\n')
 
-udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical")
-Sys.time()
-pos1 <- as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
-Sys.time()
+#Vu qu'on a 497.668 tokens, il prend bcp de temps a executer la fonction toute seule
+#On va couper iob.word en 49 parties équales (length=10.000) et 1 partie (length=7668)
+#Ensuite une boucle pour ajouter le resultat dans un dataframe
+#Cette étape va prendre environ 4 heures à executer
 
-# =======
-udmodel_english <- udpipe_load_model(file = dl$file_model)
-txt <- paste(tokens(iob.word),collapse = '\n')
+####On a décidé d'exporter le résultat en fichier txt pour économiser le temps####
 
-udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical")
-as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
+#couper en 49 parties égales
+index_row <- split(1:490000, ceiling(seq_along(1:490000)/10000))
 
-txt.udpipe <- as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
-pos.df <- data.frame(lemma = txt.udpipe$lemma, pos = txt.udpipe$upos, label = b)
+#la derniere partie est le reste
+index_row$`50` <- 490001:497668
+length(output)
+#50
 
+#pos tagging pour 10.000 premiers tokens
+pos1 <- as.data.frame(udpipe_annotate(udmodel_english, 
+                                      x = paste(a$x[output$`1`],collapse = '\n'),
+                                      tokenizer = "vertical"))
+#ind pour observer les itérations
+ind <- 0
+for (i in output[-1]){
+  #pos tagging de la partie suivante 
+  pos <- as.data.frame(udpipe_annotate(udmodel_english,
+                                       x = paste(a$x[i],collapse = '\n'),
+                                       tokenizer = "vertical"))
+  #combiner pos1 et pos
+  pos1 <- rbind(pos1,pos)
+  
+  ind <- ind + 1
+  print(ind)
+  print(nrow(pos1))
+  # break
+}
+
+####Charger le fichier de POS pour économiser le temps####
+txt.udpipe <- read.table("POS_tag.txt",header = TRUE,stringsAsFactors = FALSE)
+
+#dataframe avec tokens, lemma, pos tags, iob tags
+pos.df <- data.frame(word = txt.udpipe$token,
+                    lemma = txt.udpipe$lemma, 
+                    pos = txt.udpipe$upos, 
+                    label = iob.label, stringsAsFactors = FALSE)
+
+####Special Verb Trigger####
 special_verb_trigger <- function(data, win_size){
   # Description: fonction qui permet de récupérer une table ordonnée des verbes 
   # les plus fréquents occurant au voisinage des entités nommées labélisées.
@@ -422,14 +365,62 @@ special_verb_trigger <- function(data, win_size){
   return(table.verb)
 }
 spe.verb.trig <- special_verb_trigger(pos.df, 2)
-spe.verb.trig
-<<<<<<< HEAD
-# >>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
-=======
->>>>>>> 0c53615c290ddcdb8745a19db3b00e2df32077ba
+
+#60 premieres verbes les plus fréquentes
+head(spe.verb.trig, n = 60)
 
 
+#### Word formation pattern####
+#fonction attribuer code WFP
+# wfp_tag <- function(word){
+# t <- data.frame(word = a[1:300], label = b[1:300], stringsAsFactors = FALSE)
 
+#liste des mots greecs
+greek <- c("alpha","beta","gamma","delta","epsilon","zeta"
+           ,"eta","theta","iota","kappa","lambda","mu","nu"
+           ,"xi","omicron","pi","rho","sigma","tau","upsilon"
+           ,"phi","chi","psi","omega")
+
+#alphabet sans A, T, C , G
+sequence <- LETTERS[! LETTERS %in% c("A","G","T","C")]
+
+#creer un dataframe avec word/label IOB/tag WFP 
+pos.df <- dplyr::mutate(
+  # data.frame(word=c("ACGC",",",".","(","1,25","A","1","23525",
+  #                   "II","0.31","The","Whereas","IgM",
+  #                   "kDa","H2A","T4","6C2","19D","alpha"),stringsAsFactors = FALSE) ,
+  pos.df,
+  WFP =  
+    dplyr::case_when(
+      word  == ","  ~ "Comma",
+      word  == "."  ~ "Dot",
+      word  %in% c("(",")","[","]") ~ " Parenthesis",
+      word  %in% 0:9 ~ "OneDigit",
+      grepl("^[[:digit:]]+$", word) & nchar(word) > 1 ~ "AllDigits",
+      word %in% LETTERS ~ "OneCap",
+      tolower(word)  %in% tolower(stopwords(language = "en")) ~ "StopWord",
+      !grepl(paste0(c(sequence,0:9),collapse = "|"),gsub("[[:punct:]]", "", toupper(word))) ~ "ATCGsequence",
+      
+      !is.na(as.roman(word)) & is.na(as.numeric(word)) ~ "RomanDigit",
+      grepl("^[[:upper:]]+$", word) & nchar(word) > 1 ~ "AllCaps",
+      
+      tolower(word) %in% greek ~ "GreekLetter",
+      grepl("^[[:digit:]]\\,.*[[:digit:]]$",word) ~ "DigitCommaDigit",
+      grepl("^[[:digit:]]\\..*[[:digit:]]$",word) ~ "DigitDotDigit",
+      
+      grepl("^[[:upper:]].*[[:lower:]]$",word) ~ "CapLowAlpha",
+      grepl("^[[:upper:]].*[[:lower:]].*[[:upper:]]$",word) ~ "CapMixAlpha",
+      grepl("^[[:lower:]].*[[:upper:]].*[[:lower:]]$",word) ~ "LowMixAlpha",
+      grepl("^[[:upper:]].*[[:digit:]].*[[:upper:]]$",word) ~ "AlphaDigitAlpha",
+      grepl("^[[:upper:]].*[[:digit:]]$",word) ~ "AlphaDigit",
+      grepl("^[[:digit:]].*[[:upper:]].*[[:digit:]]$",word) ~ "DigitAlphaDigit",
+      grepl("^[[:digit:]].*[[:upper:]|[:lower:]]$",word) ~ "DigitAlpha",
+      
+      TRUE                     ~ "Others"
+    ))
+
+#les 100eres lignes de data_wfp
+head(data_wfp, n = 100)
 
 
 
