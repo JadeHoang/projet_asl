@@ -257,19 +257,19 @@ iob_tag <- function(word,semantic){
 # debug(iob_tag)
 # undebug(iob_tag)
 
-a <- c()
-b <- c()
-a <- unlist(sapply(toks2, function(x){
+iob.word <- c()
+iob.label <- c()
+iob.word <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
                   else x}),use.names = FALSE)
 
 
-b <- unlist(sapply(toks2, function(x){
+iob.label <- unlist(sapply(toks2, function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
                   else "O"}),use.names = FALSE)
   
-length(a)
-length(b)
+length(iob.word)
+length(iob.label)
 length(as.character(tokens(test1)))
 
 ####POS tagging avec NLP####
@@ -281,12 +281,41 @@ udmodel_english <- udpipe_load_model(file = "english-ud-2.0-170801.udpipe")
 
 ## Or give the full path to the file
 udmodel_english <- udpipe_load_model(file = dl$file_model)
-txt <- paste(tokens(x1),collapse = '\n')
+txt <- paste(tokens(iob.word),collapse = '\n')
 
 udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical")
 as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
 
+txt.udpipe <- as.data.frame(udpipe_annotate(udmodel_english, x = txt, tokenizer = "vertical"))
+pos.df <- data.frame(lemma = txt.udpipe$lemma, pos = txt.udpipe$upos, label = b)
 
+special_verb_trigger <- function(data, win_size){
+  # Description: fonction qui permet de récupérer une table ordonnée des verbes 
+  # les plus fréquents occurant au voisinage des entités nommées labélisées.
+  # Input: 
+  # data (data.frame): contient les lemma (forme lemmatisée des tokens), pos (part of speech) et label.
+  # win_size (integer): taille de la fenêtre de voisinage du mot analysé.
+  # Output:
+  # table.verb (table): table ordonnée des special verb trigger.
+  list.ind <- which(data$label != "O")
+  reject_first_and_last <- c(c(-win_size:-1), c(-length(list.ind):-length(list.ind)-win_size))
+  list.ind2 <- list.ind[reject_first_and_last]
+  win = c(c(-win_size:-1), c(1:win_size))
+  
+  list.verb <- c()
+  for(i in list.ind2){
+    for(w in win){
+      if( data$pos[i + w] == "VERB" && !is.na(data$pos[i + w] )){
+        list.verb <- c(list.verb, as.character(data$lemma[i+w]))
+      }
+    }
+  }
+  
+  table.verb <- sort(table(list.verb), decreasing = TRUE)
+  return(table.verb)
+}
+spe.verb.trig <- special_verb_trigger(pos.df, 2)
+spe.verb.trig
 
 
 
