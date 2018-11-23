@@ -150,6 +150,8 @@ concat_text <- function(xmlnode){
   return(xml.full)
 }
 
+#id des docs
+vals.id <- 1:2000
 #stocker les balises de titre
 title <- xml_find_all(test, "//article/title")
 #extraire les titres et les stocker dans un vecteur
@@ -162,8 +164,10 @@ vals.abstract <- sapply(abstract, function(x) {concat_text(x)})
 
 #combiner les titres et les abstracts
 vals.article <- paste(vals.title,vals.abstract)
-dat <- data.frame(cbind(doc = vals.article),stringsAsFactors = FALSE)
 
+#data frame qui stock les articles
+data_article <- data.frame(cbind(doc_id = vals.id, doc = vals.article),
+                          stringsAsFactors = FALSE)
 
 ####creer un dictionnaire par rapport a df_new####
 #frequence des classes d'entites
@@ -226,23 +230,32 @@ term.cline <- as.character(sapply(term.cline, function(x) {gsub("_"," ",x)}))
 #creer un dictionaire avec package quanteda
 dict <- dictionary(list(DNA=term.dna,
                         PROTEIN=term.protein
-                         ,RNA=term.rna
-                         ,CTYPE=term.ctype,
+                        ,RNA=term.rna
+                        ,CTYPE=term.ctype,
                          CLINE=term.cline
                         ))
 
-test1 <- dat$doc
 #tokeniser les abtracts (tokeniser les mots composés)
-toks <- as.character(tokens_compound(tokens(test1), dict,join = FALSE))
-
 #les mots qui se ressemblent et les remplacer dans la liste des tokens 
-infle <- c("cell","cells")
+infle <- c("cell","cells") #les mots qui se ressemblent
 lemma <- rep("cell", length(infle))
-toks2 <- tokens_replace(tokens(test1), infle, lemma)
-toks2 <- as.character(tokens_compound(toks2,dict,join = FALSE))
+toks_replace <- tokens_replace(tokens(data_article$doc), infle, lemma) #remplacer les mots
+toks_compound <- tokens_compound(toks_replace,dict,join = FALSE)
+
+#enregistrer les id des documents dans doc_id
+doc_id <- c()
+for (i in 1:length(docnames(toks_compound))){
+
+  svMisc::progress(i, max.value = length(docnames(toks_compound)))
+  
+  doc_id <- c(doc_id,rep(i,length(as.character(toks_compound[i]))))
+}
+
+#data frame pour les tokens et leurs documents id
+data_toks <- data.frame(doc_id, toks = as.character(toks_compound), stringsAsFactors = FALSE)
 
 #fonction pour libeller en IOB/BOI les tokens 
-iob_tag <- function(word,semantic){
+iob_tag <- function(word,semantic,id){
   #separer le mot par "_"
   if (grepl(pattern = "_", word,fixed=TRUE)){
     word.vec <- unlist(strsplit(word,"_"))
@@ -251,14 +264,18 @@ iob_tag <- function(word,semantic){
                         paste("B",semantic,sep = "-"), 
                         paste("I",semantic,sep = "-"))
     
+    doc.vec <- rep(id, length(word.vec))
+    
   }else{
     word.vec <- word
     
     label.vec <- paste("B",semantic,sep = "-")
+    
+    doc.vec <- id
   }
   
   # return(data.frame(word = word.vec, label = label.vec,row.names = NULL,stringsAsFactors = FALSE))
-  return(list(word=word.vec , label=label.vec))
+  return(list(word=word.vec , label=label.vec, id = doc.vec))
 }
 
 #initialiser les vecteurs pour les tokens et IOB tags
@@ -266,20 +283,26 @@ iob.word <- c()
 iob.label <- c()
 
 #vecteur qui stocke les tokens apres avoir separé et libellé avec les tag IOB
-iob.word <- unlist(sapply(toks2, function(x){
+iob.word <- unlist(sapply(as.character(toks_compound), function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$word
                   else x}),use.names = FALSE)
 
 #vecteur qui stocke les tag IOB qui correspondent a des tokens au dessus
-iob.label <- unlist(sapply(toks2, function(x){
+iob.label <- unlist(sapply(as.character(toks_compound), function(x){
                   if(x %in% df_5_ent$lex) iob_tag(x, df_5_ent$sem[which(df_5_ent$lex==x )])$label
                   else "O"}),use.names = FALSE)
+
+#identifiant des documents
+doc_id <- unlist(apply(data_toks ,1, function(x){
+  if(x[2] %in% df_5_ent$lex) iob_tag2(x[2], x[1] ,df_5_ent$sem[which(df_5_ent$lex==x )])$id
+  else x[1]}),use.names = FALSE)
 
 #longueur de vecteur a
 length(iob.word)
 #longueur de vecteur b
 length(iob.label)
-
+#longueur de vecteur identifiant document
+length(doc_id)
 #il faut que iob.word et  aient de meme longueur = 497668
 
 ####POS tagging avec NLP####
