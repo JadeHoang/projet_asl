@@ -255,7 +255,7 @@ for (i in 1:length(docnames(toks_compound))){
 data_toks <- data.frame(doc_id, toks = as.character(toks_compound), stringsAsFactors = FALSE)
 
 #fonction pour libeller en IOB/BOI les tokens 
-iob_tag <- function(word,semantic,id){
+iob_tag <- function(word,semantic){
   #separer le mot par "_"
   if (grepl(pattern = "_", word,fixed=TRUE)){
     word.vec <- unlist(strsplit(word,"_"))
@@ -263,20 +263,36 @@ iob_tag <- function(word,semantic,id){
     label.vec <- ifelse(word.vec == word.vec[1], 
                         paste("B",semantic,sep = "-"), 
                         paste("I",semantic,sep = "-"))
-    
-    doc.vec <- rep(id, length(word.vec))
-    
+
   }else{
     word.vec <- word
     
     label.vec <- paste("B",semantic,sep = "-")
     
+  }
+  
+  # return(data.frame(word = word.vec, label = label.vec,row.names = NULL,stringsAsFactors = FALSE))
+  return(list(word=word.vec , label=label.vec))
+}
+
+#identifiant des doc selon IOB tags
+iob_id_doc <- function(word,id,semantic){
+  #separer le mot par "_"
+  if (grepl(pattern = "_", word,fixed=TRUE)){
+  
+    word.vec <- unlist(strsplit(word,"_"))
+    
+    doc.vec <- rep(id,length(word.vec))
+    
+  }else{
+    
     doc.vec <- id
   }
   
   # return(data.frame(word = word.vec, label = label.vec,row.names = NULL,stringsAsFactors = FALSE))
-  return(list(word=word.vec , label=label.vec, id = doc.vec))
+  return(doc.vec)
 }
+
 
 #initialiser les vecteurs pour les tokens et IOB tags
 iob.word <- c()
@@ -293,9 +309,10 @@ iob.label <- unlist(sapply(as.character(toks_compound), function(x){
                   else "O"}),use.names = FALSE)
 
 #identifiant des documents
+doc_id <- c()
 doc_id <- unlist(apply(data_toks ,1, function(x){
-  if(x[2] %in% df_5_ent$lex) iob_tag2(x[2], x[1] ,df_5_ent$sem[which(df_5_ent$lex==x )])$id
-  else x[1]}),use.names = FALSE)
+  if(x[2] %in% df_5_ent$lex) c(doc_id,iob_id_doc(x[2], x[1] ,df_5_ent$sem[which(df_5_ent$lex==x[2])]))
+  else c(doc_id,x[1])}),use.names = FALSE)
 
 #longueur de vecteur a
 length(iob.word)
