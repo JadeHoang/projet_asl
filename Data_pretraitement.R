@@ -344,16 +344,16 @@ index_row <- split(1:490000, ceiling(seq_along(1:490000)/10000))
 
 #la derniere partie est le reste
 index_row$`50` <- 490001:497668
-length(output)
+
 #50
 
 #pos tagging pour 10.000 premiers tokens
 pos1 <- as.data.frame(udpipe_annotate(udmodel_english, 
-                                      x = paste(a$x[output$`1`],collapse = '\n'),
+                                      x = paste(a$x[index_row$`1`],collapse = '\n'),
                                       tokenizer = "vertical"))
 #ind pour observer les itérations
 ind <- 0
-for (i in output[-1]){
+for (i in index_row[-1]){
   #pos tagging de la partie suivante 
   pos <- as.data.frame(udpipe_annotate(udmodel_english,
                                        x = paste(a$x[i],collapse = '\n'),
