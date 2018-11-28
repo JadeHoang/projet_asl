@@ -28,7 +28,7 @@ seg_size <- 10000
 nb_bloc <- nrow(doc_id)%/%seg_size
 index_row <- split(1:(nb_bloc*seg_size), ceiling(seq_along(1:(nb_bloc*seg_size))/seg_size))
 #la derniere partie est le reste
-index_row[[nb_bloc+1]] <- ((nb_bloc+1)*seg_size):nrow(doc_id)
+index_row[[as.character(nb_bloc+1)]] <- ((nb_bloc*seg_size)+1):nrow(doc_id)
 
 
 #pos tagging pour 10.000 premiers tokens

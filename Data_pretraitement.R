@@ -204,7 +204,7 @@ labelling <- function(cellule){
 }
 #relibeller les entites
 lex_sem_5_ent.df$sem <- sapply(lex_sem_5_ent.df$sem,function(x) {labelling(x)})
-#garger seulement les lignes uniques
+#garder seulement les lignes uniques
 lex_sem_5_ent.df <- unique(lex_sem_5_ent.df)
 # length(unique(lex_sem_5_ent$lex))
 
@@ -259,7 +259,7 @@ for (i in 1:length(docnames(toks_compound))){
 data_toks <- data.frame(doc_id, toks = as.character(toks_compound), stringsAsFactors = FALSE)
 
 #fonction pour libeller en IOB/BIO les tokens 
-iob_tag <- function(word, semantic, id){
+iob_tag <- function(word, semantic){
   #separer le mot par "_"
   if (grepl(pattern = "_", word,fixed=TRUE)){
     word.vec <- unlist(strsplit(word,"_"))
@@ -268,18 +268,15 @@ iob_tag <- function(word, semantic, id){
                         paste("B",semantic,sep = "-"), 
                         paste("I",semantic,sep = "-"))
     
-    doc.vec <- rep(id, length(word.vec))
-    
   }else{
     word.vec <- word
     
     label.vec <- paste("B",semantic,sep = "-")
     
-    doc.vec <- id
   }
   
   # return(data.frame(word = word.vec, label = label.vec,row.names = NULL,stringsAsFactors = FALSE))
-  return(list(word=word.vec , label=label.vec, id = doc.vec))
+  return(list(word=word.vec , label=label.vec))
 }
 
 #identifiant des doc selon IOB tags
@@ -303,19 +300,20 @@ iob_id_doc <- function(word,id,semantic){
 #initialiser les vecteurs pour les tokens et IOB tags
 iob.word <- c()
 iob.label <- c()
+doc_id <- c()
 
 #vecteur qui stocke les tokens apres avoir separé et libellé avec les tag IOB
 iob.word <- unlist(sapply(as.character(toks_compound), function(x){
-                  if(x %in% lex_sem_5_ent.df$lex) iob_tag(x, lex_sem_5_ent.df$sem[which(lex_sem_5_ent.df$lex==x )], doc_id)$word
+                  if(x %in% lex_sem_5_ent.df$lex) iob_tag(x, lex_sem_5_ent.df$sem[which(lex_sem_5_ent.df$lex==x )])$word
                   else x}),use.names = FALSE)
 
 #vecteur qui stocke les tag IOB qui correspondent a des tokens au dessus
 iob.label <- unlist(sapply(as.character(toks_compound), function(x){
-                  if(x %in% lex_sem_5_ent.df$lex) iob_tag(x, lex_sem_5_ent.df$sem[which(lex_sem_5_ent.df$lex==x )], doc_id)$label
+                  if(x %in% lex_sem_5_ent.df$lex) iob_tag(x, lex_sem_5_ent.df$sem[which(lex_sem_5_ent.df$lex==x )])$label
                   else "O"}),use.names = FALSE)
 
 #identifiant des documents
-doc_id <- c()
+
 doc_id <- unlist(apply(data_toks ,1, function(x){
   if(x[2] %in% lex_sem_5_ent.df$lex) c(doc_id,iob_id_doc(x[2], x[1] ,lex_sem_5_ent.df$sem[which(lex_sem_5_ent.df$lex==x[2])]))
   else c(doc_id,x[1])}),use.names = FALSE)
