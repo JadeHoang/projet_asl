@@ -1,0 +1,168 @@
+\documentclass[11pt,a4paper]{report}
+%\documentclass[11pt,a4paper]{scrreprt}
+
+%% PACKAGE
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[bookmarksdepth=10, hidelinks, breaklinks]{hyperref}
+\usepackage[final]{pdfpages}
+\usepackage[top=0.5in, bottom=1.5in, left=1in, right=1in]{geometry}
+\usepackage[utf8]{inputenc} % because latin1 suck
+\usepackage{appendix}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{lmodern,textcomp}
+\usepackage{subcaption}
+\usepackage{times} % nicer font
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[T1]{tipa}
+\usepackage{amsmath}
+\usepackage{amssymb}
+% \usepackage[a4paper]{geometry}
+\usepackage[french]{layout}
+% \usepackage[style=numeric, backend=bibtex]{biblatex}
+% \usepackage{adjustbox}
+% \usepackage{array}
+% \usepackage{booktabs}
+% \usepackage{breakcites}
+% \usepackage{calc}
+% \usepackage{cancel}
+% \usepackage{color}
+\usepackage{float}
+% \usepackage{framed}
+% \usepackage{grffile}
+\usepackage{indentfirst} % indent first paragraph of chapter/section
+% \usepackage{lipsum}
+% \usepackage{listings}
+% \usepackage{multirow}
+% \usepackage{pgfplots}
+% \usepackage{tabularx}
+% \usepackage{tabu}
+% \usepackage{textpos}            % free image positioning
+% \usepackage{titlesec}
+% \usepackage{ulem}
+% \usepackage{wrapfig}
+\usepackage[export]{adjustbox}
+
+
+\fancypagestyle{plain}{
+
+	% \fancyhf[F]{} % reset footer style
+	\fancyhf{} % reset footer style
+	%\setlength\headheight{30pt}
+	\setlength\headheight{1in}
+	\addtolength{\textheight}{-30.0pt}
+%	\fancyhead[C]{
+%		\vspace{0.5in}\includegraphics[width=\linewidth,keepaspectratio]{./media/img/tch-header.png}
+%	}
+	\renewcommand{\headrulewidth}{0.0pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+	\fancyfoot[R]{\textcolor{Gray}{Page \thepage\ of \pageref{LastPage}}}	
+}
+%\pagestyle{fancy}
+\pagestyle{plain}
+
+%% COMMAND
+
+\newcommand{\eg}{\textit{e.g.: }}
+\newcommand{\ie}{\textit{i.e.: }}
+\newcommand{\etal}{\textit{et al. }}
+\newcommand{\red}{\textcolor{red}{TODO:}}
+\newcommand{\gr}{\textbf}
+\newcommand{\mgr}{\boldsymbol}
+
+%%% HELPERS
+\newcommand{\makehref}[1]{\href{#1}{#1}}
+\newcommand{\makehrefmail}[1]{\href{mailto:#1}{#1}}
+
+%% TITLEPAGE
+
+\title{Titre de l'article}
+\date{\today}
+\author{NOM PRENOM}
+
+%% DOCUMENT
+
+\begin{document}
+
+
+
+\include{titlepage}
+%\newpage
+%\strut
+%\newpage
+
+
+%\chapter*{Acknowledgments}
+%	\input{acknowledgments}
+%\newpage
+%\strut
+%\newpage
+
+%\chapter*{Technicolor Company}
+%	\input{introduction_tch}
+
+
+\tableofcontents
+%\chapter*{General Introduction}
+%	\input{generalintroduction}
+
+
+
+\chapter{Introduction}
+	\section{Introduction Générale}
+		\input{introduction}
+	\section{Problématique}
+		\input{problematique}
+	\section{Organisation du Rapport}
+		\input{travaux_abordes}
+
+  	
+\chapter{Reconnaissance d'Entité Nommées}
+	\section{Vue d'Ensemble}
+		\input{pipeline}
+	\section{Pré-Traitements}
+		%\input{preprocessing}
+	\section{Extraction des Descripteurs}
+		%\input{extraction_features}
+	\section{Méthodes de Classification}
+		\subsection{Bayésien Naïf}
+			%\input{naivebayes}
+  		\subsection{Hidden Markov Model}
+  			%\input{hmm}
+  		\subsection{Conditional Random Field}
+  			%\input{crf}
+  
+  
+\chapter{Expériences}
+  	\section{Corpus GENIA}
+  		\input{corpus_genia}
+  	\section{Sélection des Catégories d'Entités Nommées}
+  	\section{Méthodes de Classifications Testées}
+
+\chapter{Discussions}
+
+
+\chapter*{Conclusion}
+	%\input{general_conclusion}
+	
+	
+\begin{appendices}
+	\chapter{Glossaire}
+		\input{glossary}
+	\chapter{Algorithmes}
+		%\input{EM_algorithm}
+
+	\bibliographystyle{apalike}
+	\bibliography{biblio}
+\end{appendices}
+\newpage
+\newpage
+\newpage
+		%\input{abstract}
+
+\end{document}
+

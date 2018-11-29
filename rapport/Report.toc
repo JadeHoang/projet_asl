@@ -1,0 +1,20 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introduction G\IeC {\'e}n\IeC {\'e}rale}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Probl\IeC {\'e}matique}{2}{section.1.2}
+\contentsline {section}{\numberline {1.3}Organisation du Rapport}{3}{section.1.3}
+\contentsline {chapter}{\numberline {2}Reconnaissance d'Entit\IeC {\'e} Nomm\IeC {\'e}es}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Vue d'Ensemble}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}Pr\IeC {\'e}-Traitements}{4}{section.2.2}
+\contentsline {section}{\numberline {2.3}Extraction des Descripteurs}{4}{section.2.3}
+\contentsline {section}{\numberline {2.4}M\IeC {\'e}thodes de Classification}{4}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Bay\IeC {\'e}sien Na\IeC {\"\i }f}{4}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Hidden Markov Model}{4}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}Conditional Random Field}{4}{subsection.2.4.3}
+\contentsline {chapter}{\numberline {3}Exp\IeC {\'e}riences}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Corpus GENIA}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}S\IeC {\'e}lection des Cat\IeC {\'e}gories d'Entit\IeC {\'e}s Nomm\IeC {\'e}es}{5}{section.3.2}
+\contentsline {section}{\numberline {3.3}M\IeC {\'e}thodes de Classifications Test\IeC {\'e}es}{5}{section.3.3}
+\contentsline {chapter}{\numberline {4}Discussions}{6}{chapter.4}
+\contentsline {chapter}{\numberline {A}Glossaire}{8}{Appendix.1.A}
+\contentsline {chapter}{\numberline {B}Algorithmes}{9}{Appendix.1.B}
