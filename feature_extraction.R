@@ -51,6 +51,8 @@ for (i in index_row[-1]){
   print(nrow(pos1))
   # break
 }
+# Sauvegarder le fichier
+# write.table(pos1, "POS_tag.txt")
 
 ####Charger le fichier de POS pour économiser le temps####
 udpipe.data <- read.table("POS_tag.txt",header = TRUE,stringsAsFactors = FALSE)

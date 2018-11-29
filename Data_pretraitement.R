@@ -326,6 +326,9 @@ length(iob.label)
 length(doc_id)
 #il faut que iob.word et  aient de meme longueur = 497668
 
+names(iob.word) <- "word"
+names(iob.label) <- 'label'
+
 write.table(iob.word, "iob_word.var")
 write.table(iob.label, "iob_label.var")
 write.table(doc_id, "doc_id.var")
