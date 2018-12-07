@@ -1,0 +1,29 @@
+Les modèles bayésiens sont des modèles de classification qui se basent sur la règle de Bayes. 
+\begin{center}$P(A | B) = \frac{P(B | A) P(A)}{P(B)}$
+\end{center}
+
+$P(A | B)$ est appelée la probabilité a posteriori. $P(B | A)$ est la vraisemblance. $P(A)$ est la probabilité a priori et $P(B)$ est appelé l'évidence.
+
+Appliqué à notre cas:
+
+$P(c_{i} | X) = \frac{P(c_{i}) P(X | c_{i})}{P(X)}$
+
+Modèle bayésien cherche à maximiser la probabilité a posteriori
+
+$ \underset{x}{\operatorname{argmax}} P(c_{i} | X)$
+
+Cela revient à maximiser le produit de la vraisemblance et de la probabilité a priori des classes:
+
+$P(c_{i} | X) \propto P(c_{i}) P(X | c_{i})$
+
+$P(X | c_{i}) = P(x_{1}, x_{2}, ..., x_{n} | c_{i})$
+
+Hypothèse naïve entre les variables:
+
+$\displaystyle P(X | c_{i}) = \prod_{j=1}^{n} P(x_{j} | c_{i})$
+
+
+$ \underset{x}{\operatorname{argmax}} P(c_{i} | X) \propto P(c_{i}) \displaystyle \prod_{j=1}^{n} P(x_{j} | c_{i}) $
+
+Il faut donc calculer $P(c_{i})$ et $P(x_{j} | c_{i})$ pour tous les $j$.
+Pour le moment, aucune hypothèse sur la distribution utilisée modéliser la vraisemblance des données. Dans le cas catégoriel, on peut soit utiliser une distribution de Bernoulli multivariée soit une distribution multinomiale.
