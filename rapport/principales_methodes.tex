@@ -1,10 +1,11 @@
-\noindent\gr{Méthodes Rules-based}\\
+\noindent\gr{Méthodes Rules-Based}\\
 
-Historiquement, les premières méthodes étaient basées sur des règles élaborées soit de manière automatique, soit écrites "à la main". Le principe se base sur des paires $pattern, action$ où un $pattern$ correspond généralement à un une expression régulière. Lorsqu'un token (ou une séquence de tokens) correspond à un $pattern$, une $action$ est exécutée. Cette $action$ correspond à l'étiquetage des tokens (entité, début ou fin de l'entité par exemple). Bien que très efficaces, ces approches nécessitent, dans le cas des règles écrites à la main, un expert à la fois de la langue et du domaine, rendant la technique très spécifique et très coûteuse en temps. Pour le cas des règles obtenues de manière automatique, elles souffrent d'un manque de précision \cite{Mladenic2017}.\\
+Historiquement, les premières méthodes étaient basées sur des règles ("Rules-Based") élaborées soit de manière automatique, soit écrites "à la main". Le principe se base sur des paires $(pattern, action)$ où un $pattern$ correspond généralement à un une expression régulière. Lorsqu'un token (ou une séquence de tokens) correspond à un $pattern$, une $action$ associée est exécutée. Cette $action$ correspond à l'étiquetage des tokens (entité, début ou fin de l'entité par exemple). Bien que très efficaces, ces approches nécessitent, dans le cas des règles écrites à la main, un expert à la fois de la langue et du domaine, rendant la technique très spécifique et très coûteuse en temps. Pour le cas des règles obtenues de manière automatique, elles souffrent d'un manque de précision \cite{Mladenic2017}. On trouve également d'autres inconvénients impactant par exemple la robustesse du système de reconnaissance. En effet, lorsque de nouvelles données nécessitent de nouvelles règles, il faut alors mettre à jour la table de règles.\\
 
 \noindent\gr{Méthodes Statistiques}\\
 
-L
+Les approches statistiques permettent de palier certains inconvénients des méthodes Rules-Based car les "règles" sont apprises sur les données. On distingue dans ces méthodes d'apprentissage statistique principalement 2 types d'approches: semi-supervisées et supervisées. Les deux types d'approches font usage des données étiquetées. Une partie de ces données sert à entraîner le modèle de classification, puis les données restantes servent à évaluer les performances du modèle.
+
 Machine-learning techniques
 Supervised-Learning : (non exhaustif) SVM, CRF, HMM, Naïve Bayesian, Neural Network, Decision Tree, Maximum Entropy Model
 Semi-Supervised-Learning : (données labélisées et non labélisées) Boot-strapping, Co-Training, 

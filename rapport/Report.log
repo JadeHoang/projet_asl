@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2018.9.25)  7 DEC 2018 14:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2018.9.25)  7 DEC 2018 15:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1278,6 +1278,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 5--6
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--8
+
+ []
+
 ) (./travaux_abordes.tex) [3]
 Chapitre 2.
 (./pipeline.tex)
@@ -1334,11 +1339,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 167.
 Here is how much of TeX's memory you used:
  12083 strings out of 494875
  176041 string characters out of 6178748
- 284497 words of memory out of 5000000
+ 285497 words of memory out of 5000000
  15077 multiletter control sequences out of 15000+600000
  53558 words of font info for 54 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 42i,12n,43p,882b,541s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,12n,43p,1147b,541s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/us
 r/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvip
 s/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/sha
@@ -1351,7 +1356,7 @@ pe1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr
 ts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb
 >
-Output written on Report.pdf (12 pages, 151170 bytes).
+Output written on Report.pdf (12 pages, 151543 bytes).
 PDF statistics:
  240 PDF objects out of 1000 (max. 8388607)
  210 compressed objects within 3 object streams
