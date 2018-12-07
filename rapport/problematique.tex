@@ -1,21 +1,2 @@
-\red{Problème : en se basant sur des données annotées, on essaie de retrouver des entités nommées dans de nouveaux documents.
-
-Solution stupide : Faire une recherche des formes lémmatisées à partir d'un dictionnaire obtenue sur le jeu d'entrainement.\\
-
-==>Impossible de retrouver de nouveaux mots\\
-==>On risque de classer un mot figurant dans les mots annotés mais ayant un sens différent car dans un contexte différent.\\
-
-Plusieurs méthodes ont été proposées:
-
-
-Rules-based techniques
-Premières méthodes basées sur des règles faites à la main. Ces approches sont très efficaces. Cependant le problème est qu’elles nécessitent un expert à la fois de la langue et du domaine rendant la technique très spécifique et très coûteuse en temps.
-Règles comme « si ‘X’ est précédé d’une préposition ‘Y’
-
-Machine-learning techniques
-Supervised-Learning : (non exhaustif) SVM, CRF, HMM, Naïve Bayesian, Neural Network, Decision Tree, Maximum Entropy Model
-Semi-Supervised-Learning : (données labélisées et non labélisées) Boot-strapping, Co-Training, 
-Unsupervised-Learning : méthodes de clustering.
-Dans notre étude, nous ne nous concentrons que sur 3 méthodes d’apprentissage supervisé.
-
-Développement de méthodes statistiques qui ont très rapidement dépassé les résultats des méthodes basées sur les règles.}
+\red{Le problème considéré est une tâche de catégorisation pour laquelle il faut attribuer une classe à un mot. Nous disposons pour cela d'un corpus de données annotées dont une partie doit servir à alimenter le système de reconnaissance tandis que l'autre sert à l'évaluer.\\
+Pour résoudre ce problème, on pourrait penser que la solution triviale consiste à comparer le mot à classifier à des dictionnaires de mots obtenus dans le jeu de données labellisées. Chaque dictionnaire correspondant à une classe, si le mot existe dans un dictionnaire alors il serait attribué à la classe correspondante. Une telle solution trouve malheureusement rapidement de nombreuses limitations. Comment classifier un mot qui n'existe dans aucun des dictionnaires (c'est à dire jamais observé dans le jeu d’entraînement) ? Par ailleurs, un même mot peut recouvrir plusieurs sens et donc appartenir à une classe différente selon le contexte. Il s'agit ici d'un problème d'ambiguïté. Le problème n'étant pas si simple, plusieurs méthodes ont été proposées.

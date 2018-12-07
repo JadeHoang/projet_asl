@@ -1,47 +1,49 @@
-This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: Report.aux
 A level-1 auxiliary file: titlepage.aux
 The style file: apalike.bst
 Database file #1: biblio.bib
+Warning--can't use both author and editor fields in Mladenic2017
 You've used 1 entry,
             1935 wiz_defined-function locations,
-            479 strings with 3789 characters,
-and the built_in function-call counts, 384 in all, are:
-= -- 38
+            482 strings with 3858 characters,
+and the built_in function-call counts, 527 in all, are:
+= -- 55
 > -- 7
-< -- 1
-+ -- 4
+< -- 2
++ -- 2
 - -- 2
-* -- 31
-:= -- 69
+* -- 34
+:= -- 79
 add.period$ -- 3
 call.type$ -- 1
-change.case$ -- 6
+change.case$ -- 5
 chr.to.int$ -- 1
-cite$ -- 1
-duplicate$ -- 14
-empty$ -- 31
+cite$ -- 2
+duplicate$ -- 26
+empty$ -- 43
 format.name$ -- 3
-if$ -- 72
+if$ -- 116
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 1
+missing$ -- 2
 newline$ -- 8
 num.names$ -- 3
-pop$ -- 3
+pop$ -- 8
 preamble$ -- 1
 purify$ -- 6
 quote$ -- 0
-skip$ -- 12
+skip$ -- 25
 stack$ -- 0
-substring$ -- 39
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 52
+swap$ -- 13
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 6
-warning$ -- 0
-while$ -- 4
+type$ -- 4
+warning$ -- 1
+while$ -- 5
 width$ -- 0
-write$ -- 15
+write$ -- 16
+(There was 1 warning)
