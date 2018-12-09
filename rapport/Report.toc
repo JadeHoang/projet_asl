@@ -16,6 +16,7 @@
 \contentsline {section}{\numberline {3.1}Corpus GENIA}{6}{section.3.1}
 \contentsline {section}{\numberline {3.2}S\IeC {\'e}lection des Cat\IeC {\'e}gories d'Entit\IeC {\'e}s Nomm\IeC {\'e}es}{6}{section.3.2}
 \contentsline {section}{\numberline {3.3}M\IeC {\'e}thodes de Classifications Test\IeC {\'e}es}{6}{section.3.3}
+\contentsline {section}{\numberline {3.4}R\IeC {\'e}sultats}{6}{section.3.4}
 \contentsline {chapter}{\numberline {4}Discussions}{7}{chapter.4}
 \contentsline {chapter}{\numberline {A}Glossaire}{9}{Annexe.1.A}
 \contentsline {chapter}{\numberline {B}Algorithmes}{10}{Annexe.1.B}
