@@ -5,4 +5,16 @@ Mladeni{\'{c}}, D. (2017).
 \newblock {\em Text Mining}, pages 1241--1242.
 \newblock Springer US, Boston, MA.
 
+\bibitem[Munkhdalai et~al., 2012]{Cotraining}
+Munkhdalai, T., Li, M., Kim, T., Namsrai, O., Jeong, S., Shin, J., and Ryu,
+  K.~H. (2012).
+\newblock Bio named entity recognition based on co-training algorithm.
+\newblock In {\em 2012 26th International Conference on Advanced Information
+  Networking and Applications Workshops}, pages 857--862.
+
+\bibitem[S et~al., 2015]{Thenmalar}
+S, T., J, B., and Geetha, T. (2015).
+\newblock Semi-supervised bootstrapping approach for named entity recognition.
+\newblock {\em International Journal on Natural Language Computing}, 4:01--14.
+
 \end{thebibliography}

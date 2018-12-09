@@ -4,12 +4,7 @@ Historiquement, les premières méthodes étaient basées sur des règles ("Rule
 
 \noindent\gr{Méthodes Statistiques}\\
 
-Les approches statistiques permettent de palier certains inconvénients des méthodes Rules-Based car les "règles" sont apprises sur les données. On distingue dans ces méthodes d'apprentissage statistique principalement 2 types d'approches: semi-supervisées et supervisées. Les deux types d'approches font usage des données étiquetées. Une partie de ces données sert à entraîner le modèle de classification, puis les données restantes servent à évaluer les performances du modèle.
-
-Machine-learning techniques
-Supervised-Learning : (non exhaustif) SVM, CRF, HMM, Naïve Bayesian, Neural Network, Decision Tree, Maximum Entropy Model
-Semi-Supervised-Learning : (données labélisées et non labélisées) Boot-strapping, Co-Training, 
-Unsupervised-Learning : méthodes de clustering.
-Dans notre étude, nous ne nous concentrons que sur 3 méthodes d’apprentissage supervisé.
-
-Développement de méthodes statistiques qui ont très rapidement dépassé les résultats des méthodes basées sur les règles.}
+Les approches statistiques permettent de pallier certains inconvénients des méthodes Rules-Based car les "règles" sont apprises sur les données et non à la main. Pour la reconnaissance d'entité nommées, on distingue dans ces méthodes d'apprentissage statistique principalement 2 types d'approches: semi-supervisées et supervisées. Les deux types d'approches font usage des données étiquetées. Une partie de ces données sert à entraîner le modèle de classification, puis les données restantes servent à évaluer les performances du modèle.\\
+Dans les méthodes semi-supervisées, le jeu d'entraînement est constitué de données étiquetées et non-étiquetées. Nous ne traiterons pas le cas des méthodes semi-supervisées dans ce rapport. On peut néanmoins citer les approches par Boostrapping \cite{Thenmalar} et par Co-training \cite{Cotraining}.\\
+Pour le cas des méthodes supervisées, les données d'entraînement contiennent uniquement des données étiquetées. De nombreuses approches en apprentissage supervisé ont été développées basées sur les arbres de décision, modèles de Maximum d'Entropie, SVM, Réseaux de neurones, Bayésien Naïf, HMM, CRF ... (la liste n'est pas exhaustive).\\
+Dans ce rapport, nous ne présenterons que les méthodes Bayésien Naïf (NB), Modèles de Markov Cachés (HMM) et Conditional Random Field (CRF).

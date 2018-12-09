@@ -1,7 +1,7 @@
 #### Naive Bayes ####
 
 library(e1071)  # vieux package
-library(naivebayes) # package utilisé par "caret"
+library(dplyr)
 
 # Chargement des features
 features.full.svt.train.df <- read.table("features.full.svt.train.var")
@@ -46,9 +46,11 @@ naivebayes.cross_val <- function(dataset, var_sel){
     tab_error.mat <- as.matrix(tab_error)
     
     # calcul des indicateurs en multiclasse est la moyenne des indicateurs pour chaque classe
-    precision <- c(precision, mean( diag(tab_error.mat) / colSums(tab_error.mat) ) )
-    recall <- c(recall, mean( diag(tab_error.mat)[which(rowSums(tab_error.mat) > 0)] / rowSums(tab_error.mat)[which(rowSums(tab_error.mat) > 0)] ) )
-    F1_score <- c(F1_score, 2 * (precision * recall) / (precision + recall) )
+    P <- mean( diag(tab_error.mat) / colSums(tab_error.mat) )
+    R <- mean( diag(tab_error.mat)[which(rowSums(tab_error.mat) > 0)] / rowSums(tab_error.mat)[which(rowSums(tab_error.mat) > 0)] )
+    precision <- c(precision, P )
+    recall <- c(recall, R )
+    F1_score <- c(F1_score, 2 * (P * R) / (P + R) )
   }
   precision.global <- mean(precision)
   recall.global <- mean(recall)

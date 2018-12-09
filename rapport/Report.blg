@@ -5,45 +5,45 @@ A level-1 auxiliary file: titlepage.aux
 The style file: apalike.bst
 Database file #1: biblio.bib
 Warning--can't use both author and editor fields in Mladenic2017
-You've used 1 entry,
+You've used 3 entries,
             1935 wiz_defined-function locations,
-            482 strings with 3858 characters,
-and the built_in function-call counts, 527 in all, are:
-= -- 55
-> -- 7
-< -- 2
-+ -- 2
-- -- 2
-* -- 34
-:= -- 79
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 5
-chr.to.int$ -- 1
-cite$ -- 2
-duplicate$ -- 26
-empty$ -- 43
-format.name$ -- 3
-if$ -- 116
+            496 strings with 4319 characters,
+and the built_in function-call counts, 1584 in all, are:
+= -- 155
+> -- 63
+< -- 3
++ -- 22
+- -- 22
+* -- 123
+:= -- 254
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 25
+chr.to.int$ -- 3
+cite$ -- 4
+duplicate$ -- 67
+empty$ -- 112
+format.name$ -- 25
+if$ -- 333
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 2
-newline$ -- 8
-num.names$ -- 3
-pop$ -- 8
+missing$ -- 4
+newline$ -- 18
+num.names$ -- 9
+pop$ -- 30
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 26
 quote$ -- 0
-skip$ -- 25
+skip$ -- 56
 stack$ -- 0
-substring$ -- 52
-swap$ -- 13
-text.length$ -- 1
+substring$ -- 119
+swap$ -- 24
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 4
+type$ -- 16
 warning$ -- 1
-while$ -- 5
+while$ -- 12
 width$ -- 0
-write$ -- 16
+write$ -- 42
 (There was 1 warning)
