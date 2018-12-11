@@ -68,15 +68,15 @@ data_all_ts<-data_all_ts[,c(-2,-4,-9)] %>% as.matrix()
 #                              word          pos      svt        WFP         prefix     suffix
 #mettre les feature comme "c(\"reactive\", \"ADJ\", \"FALSE\", \"Others\", \"FALSE\", \"FALSE\")"
 #ici pour tranfere tous les donnees, il passe presque 1 heure
-#
-observations<-c()
-for (i in 1:nrow(data_all_ts)) {
-  observations<-c(observations,list(as.vector(data_all_ts[i,])))
-}
+#observations deja sauvegarde dans data/full_features.RData
+# observations<-c()
+# for (i in 1:nrow(data_all_ts)) {
+#   observations<-c(observations,list(as.vector(data_all_ts[i,])))
+# }
 
 #la ligne est label, colonne est different word avec features
 all_labels_num <- table(features.full.svt.train.df$label)
-epmatrix<-table(data_all$label,as.character(observations))
+epmatrix<-table(features.full.svt.train.df$label,as.character(observations))
 for (i in 1:11) {
   for (j in 1:length(unique(observations))) {
     epmatrix[i,j]<-epmatrix[i,j]/all_labels_num[[i]]
