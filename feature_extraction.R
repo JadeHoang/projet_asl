@@ -358,6 +358,8 @@ construt_prefix<-function(a,b){
   return(df_weight_pref[,1])
 }
 
+install.packages("hash")
+library(hash)
 ###find affix par word###
 #input
 #    words:word token
