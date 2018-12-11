@@ -12,7 +12,7 @@ On a 5 fichiers principaux ：Data_pretraitement.R，feature_extraction.R ，CRF
 ##Data_pretraitement.R
 Ce script de code contient le processus de pré-traitement du corpus GENIA de sorte à créer le dictionaire des termes qui viennent dé classes : DNA , PROTEIN , RNA , CELL TYPE, CELL LINE. A partir du dictionnaire, on a réussi à créer les labels sous forme BIO pour tous lé tokens du corpus.
 
-##feature_extraction.R \\
+##feature_extraction.R <br />
 Ce script de code contient les étapes d'extraire les descripteurs: Word Formation pattern, Special Verb Trigger, Part-of-speech et Affixes. Le résultat obtenu est un dataframe avec tous les features et leurs fenêtres (-1 et +1)
 
 ##CRF_experiments.R | NB_experiments.R | HMM_experiments.R
