@@ -160,7 +160,7 @@ while(begin<=tmp[length(tmp)]){
   res<-c(res,resultat)
   begin<-end+1
 }
-tab_error <- table(factor(res, levels = labels), f.test.label$label[1:10000])
+tab_error <- table(factor(res, levels = labels), f.test.label$label)
 tab_error.mat <- as.matrix(tab_error)
 
 # calcul des indicateurs en multiclasse est la moyenne des indicateurs pour chaque classe
