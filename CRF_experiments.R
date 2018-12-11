@@ -132,6 +132,8 @@ crf.cross_val <- function(dataset, var_sel){
   precision <- numeric()
   recall <- numeric()
   F1_score <- numeric()
+  resum <- c()
+  
   for(i in 1:nfold){
     f.train <- select(dataset$train[[i]], var_sel, label, doc_id)
     f.test <- select( dataset$test[[i]], var_sel,doc_id)
@@ -142,10 +144,9 @@ crf.cross_val <- function(dataset, var_sel){
                  group = f.train$doc_id,
                  method = "lbfgs", 
                  file  = "tagger.crfsuite",
-                 options = list(max_iterations = 30,
-                                feature.minfreq = 5,
-                                c1 = 0,
-                                c2 = 1)
+                 options = list(max_iterations = 100,
+                                c1 = 0.1,
+                                c2 = 0.1)
     )
     scores <- predict(model, 
                       newdata = subset( f.test, select = -doc_id),
@@ -181,9 +182,19 @@ crf.cross_val <- function(dataset, var_sel){
   )
 }
 
-res1_crf <- crf.cross_val(data_set, var_sel = c('word', 'pos'))
-res2_crf <- crf.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 'pos_previous', 'pos_next', 'pos'))
-res3_crf <- crf.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 'WFP', 'WFP_next','WFP_previous'))
+res1_crf <- crf.cross_val(data_set, var_sel = c('word'))
+res2_crf <- crf.cross_val(data_set, var_sel = c('lemma'))
+res3_crf <- crf.cross_val(data_set, var_sel = c('word', 'pos'))
 res4_crf <- crf.cross_val(data_set, var_sel = c('word', 'svt'))
-res5_crf <- crf.cross_val(data_set, var_sel = c('word', 'pos', 'prefixes', 'suffixes'))
+res5_crf <- crf.cross_val(data_set, var_sel = c('word', 'WFP'))
 res6_crf <- crf.cross_val(data_set, var_sel = c('word', 'prefixes', 'suffixes'))
+res7_crf <- crf.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next'))
+res8_crf <- crf.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 'pos_previous', 'pos_next', 'pos'))
+res9_crf <- crf.cross_val(data_set, var_sel = c('word', 'pos', 'prefixes', 'suffixes'))
+res10_crf <- crf.cross_val(data_set, var_sel = c('word', 'pos', 'svt', 'WFP', 'prefixes', 'suffixes'))
+res11_crf <- crf.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 
+                                                    'pos_previous', 'pos_next', 'pos',
+                                                    'svt', 'svt_previous', 'svt_next',
+                                                    'WFP', 'WFP_previous', 'WFP_next',
+                                                    'prefixes', 'prefixes_previous', 'prefixes_next',
+                                                    'suffixes', 'suffixes_previous', 'suffixes_next'))
