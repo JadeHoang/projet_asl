@@ -1,11 +1,9 @@
 #### Naive Bayes ####
-install.packages("e1071")
-install.packages("naivebayes")
+# install.packages("e1071")
+# install.packages("naivebayes")
 
 library(dplyr)
-library(caret)
 library(e1071)  # vieux package
-library(naivebayes) # package utilisé par "caret"
 
 # Chargement des features
 load(file = "data/full_features.RData")
@@ -77,10 +75,22 @@ naivebayes.cross_val <- function(dataset, var_sel){
                precision.global = precision.global, recall.global = recall.global, F1_score.global)
           )
 }
-res1 <- naivebayes.cross_val(data_set, var_sel = c('word', 'pos'))
-res2 <- naivebayes.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 'pos_previous', 'pos_next', 'pos'))
-res3 <- naivebayes.cross_val(data_set, var_sel = c('word', 'WFP'))
+
+res1 <- naivebayes.cross_val(data_set, var_sel = c('word'))
+res2 <- naivebayes.cross_val(data_set, var_sel = c('lemma'))
+res3 <- naivebayes.cross_val(data_set, var_sel = c('word', 'pos'))
 res4 <- naivebayes.cross_val(data_set, var_sel = c('word', 'svt'))
-res5 <- naivebayes.cross_val(data_set, var_sel = c('word', 'pos', 'prefixes', 'suffixes'))
+res5 <- naivebayes.cross_val(data_set, var_sel = c('word', 'WFP'))
 res6 <- naivebayes.cross_val(data_set, var_sel = c('word', 'prefixes', 'suffixes'))
+res7 <- naivebayes.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next'))
+res8 <- naivebayes.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 'pos_previous', 'pos_next', 'pos'))
+res9 <- naivebayes.cross_val(data_set, var_sel = c('word', 'pos', 'prefixes', 'suffixes'))
+res10 <- naivebayes.cross_val(data_set, var_sel = c('word', 'pos', 'svt', 'WFP', 'prefixes', 'suffixes'))
+res11 <- naivebayes.cross_val(data_set, var_sel = c('word', 'word_previous', 'word_next', 
+                                                   'pos_previous', 'pos_next', 'pos',
+                                                   'svt', 'svt_previous', 'svt_next',
+                                                   'WFP', 'WFP_previous', 'WFP_next',
+                                                   'prefixes', 'prefixes_previous', 'prefixes_next',
+                                                   'suffixes', 'suffixes_previous', 'suffixes_next'))
+
   
